@@ -1,5 +1,4 @@
 sap.ui.define([
-    "sap/m/library",
 	"sap/ui/core/mvc/Controller",
 	"sap/ui/core/Item",
 	"sap/ui/model/json/JSONModel",
@@ -10,7 +9,7 @@ sap.ui.define([
     /**
      * @param {typeof sap.ui.core.mvc.Controller} Controller
      */
-    function (MobileLibrary, Controller, Item, JSONModel, Uploader, ListItem, MessageToast) {
+    function (Controller, Item, JSONModel, Uploader, ListItem, MessageToast) {
         "use strict";
 
         return Controller.extend("sap.m.sample.UploadSet.Page", {
