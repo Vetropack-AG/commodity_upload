@@ -1,0 +1,126 @@
+<mvc:View controllerName="zgvt.commodity.upload.controller.Main"
+     displayBlock   ="true"
+    xmlns:mvc       ="sap.ui.core.mvc" 
+    xmlns:u         ="sap.ui.unified" 
+    xmlns:lf        ="sap.ui.layout.form" 
+    xmlns:core      ="sap.ui.core"
+    xmlns:l         ="sap.ui.layout"
+    xmlns:upload    ="sap.m.upload"
+    xmlns           ="sap.m">
+
+    <Page id="page" title="{i18n>title}">
+      <content>
+    	
+        <l:VerticalLayout id ='vlmain'
+	                	  class="sapUiResponsiveContentPadding"
+                		  width="100%" >
+                <Label id = 'lblMainSelectSchema' text="Select Schema" class= "sapUiTinyMarginTop"></Label>
+                   	<ComboBox
+                            items="{
+                                path: 'model1>/data'
+                           }"
+						 change = "handleChange">
+        				<core:Item key="{model1>id}" text="{model1>name}" />
+						
+			        </ComboBox>
+	    </l:VerticalLayout>
+      
+      		<upload:UploadSet
+				id="UploadSet"
+				instantUpload="false"
+				showIcons="true"
+				uploadEnabled="false"
+				terminationEnabled="true"
+				fileTypes="xlsx"
+				maxFileNameLength="30"
+				maxFileSize="200"
+				mediaTypes="application/vnd.ms-excel"
+				uploadUrl="../../../../upload"
+				items="{path: '/items', templateShareable: false}"
+				mode="MultiSelect"
+				selectionChanged="onSelectionChange" 
+                visible="{model2>/status}">
+
+			<upload:toolbar>
+				<OverflowToolbar>
+					<ToolbarSpacer/>
+					<Button
+							id     ="downloadSelectedButton"
+							text   ="Download Template"
+							press  ="onDownloadSelectedButton"/>
+                    <!-- <Button
+							id="uploadSelectedButton"
+							text="Upload Commodity Excel "
+							press="onUploadSelectedButton"/> -->
+
+					<upload:UploadSetToolbarPlaceholder />
+				</OverflowToolbar>
+			</upload:toolbar>
+			<upload:items>
+				<upload:UploadSetItem
+						fileName     ="{fileName}"
+						mediaType    ="{mediaType}"
+						url          ="{url}"
+						thumbnailUrl ="{thumbnailUrl}"
+						uploadState  ="{uploadState}">
+				</upload:UploadSetItem>
+			</upload:items>
+		</upload:UploadSet>
+
+	<l:VerticalLayout >
+		<u:FileUploader
+			id="fileUploader"
+			name="myFileUpload"
+			uploadUrl="upload/"
+			tooltip="Upload your file to the local server"
+			uploadComplete="handleUploadComplete"
+            visible="{model2>/status}"/>
+            
+		<Button
+			text="Upload Excel File"
+			press="handleUploadPress"
+            visible="{model2>/status}"/>
+	</l:VerticalLayout>
+
+         <Table id="idTable" items="{/}" visible="{model2>/status}">
+                <items>
+                    <ColumnListItem id ='cliMain'>
+                        <cells>
+                            <Text id='txtMain1' text="{prodno}"></Text>
+                            <Text id='txtMain2' text="{product}"></Text>
+                            <Text id='txtMain3' text="{productname}"></Text>
+                            <Text id='txtMain5' text="{uom}"></Text>
+                            <Text id='txtMain6' text="{uom}"></Text>
+                            <Text id='txtMain7' text="{uom}"></Text>
+							
+                        </cells>
+                    </ColumnListItem>
+                </items>
+                <columns>
+                    <Column id = 'colMain1'>
+                        <Text id='txtMain8' text="Schema Code"></Text>
+                    </Column>
+                    <Column id = 'colMain2'>
+                        <Text id='txtMain9' text="Commodity Code"></Text>
+                    </Column>
+                    <Column id = 'colMain3'>
+                        <Text id='txtMain10' text="Valid From"></Text>
+                    </Column>
+                    <Column id = 'colMain4'>
+                        <Text id='txtMain11' text="Valid To"></Text>
+                    </Column>
+                    <Column id = 'colMain5'>
+                        <Text id='txtMain12' text="1st Unit"></Text>
+                    </Column>
+                    <Column id = 'colMain6'>
+                        <Text id='txtMain13' text="Upload Status"></Text>
+                    </Column>
+                    <Column id = 'colMain7'>
+                        <Text id='txtMain14' text="Errors/Warnings"></Text>
+                    </Column>
+
+                </columns>
+            </Table> 
+        </content>
+    </Page>
+</mvc:View>

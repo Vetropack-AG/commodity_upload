@@ -1,0 +1,18 @@
+{
+    "items": [
+        {
+            "fileName"   : "Commodity template.xlsx",
+            "mediaType"  : "application/vnd.ms-excel",
+            "url"        : "demokit/sample/UploadCollection/LinkedDocuments/Business Plan Agenda.doc",
+            "uploadState": "Complete",
+            "statuses": [
+                {
+                    "title":"Commodity Template File",
+                    "text":"Excel template for upload",
+                    "state":"Information"
+                }
+            ],
+            "selected": false
+    }
+    ]
+}
