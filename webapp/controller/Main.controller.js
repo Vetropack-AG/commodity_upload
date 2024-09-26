@@ -29,14 +29,13 @@ sap.ui.define([
                 		// set explored app's demo model on this sample
 			// var oModel = new JSONModel(sap.ui.require.toUrl("zproj/arv/upload/excel/uploadexcel/model/schema.json");
 			// this.getView().setModel(oModel);
-            var oData = {
-                data: [
-                  { id: "001", name: "Option 1" },
-                  { id: "002", name: "Option 2" },
-                  { id: "003", name: "Option 3" },
-                  { id: "004", name: "Option 4" }
-                ]
-              };
+
+            var oDataModel = this.getOwnerComponent().getModel('oDataSrv');
+
+        
+
+
+
         
               // Create a JSON model and set the data
               var oModel1 = new JSONModel(oData);

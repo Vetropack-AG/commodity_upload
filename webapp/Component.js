@@ -29,6 +29,9 @@ sap.ui.define([
 
                 // set the device model
                 this.setModel(models.createDeviceModel(), "device");
+
+                var oDataSrv = this.getModel("myODataModel");
+                this.setModel(oDataSrv, "oDataSrv");
             }
         });
     }

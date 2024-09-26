@@ -2,7 +2,7 @@
 
 specVersion: "3.1"
 metadata:
-  name: zgvt.commodity.upload
+  name: zgvt.commodity.upload.test
 type: application
 server:
   customMiddleware:
@@ -15,6 +15,11 @@ server:
             - /resources
             - /test-resources
           url: https://ui5.sap.com
+        backend:
+          - path: /sap
+            url: http://vpavd910.vetropack.corporate.ads:44300
+            client: '100'
+            destination: ERP_EMBEDDED_D91_100
     - name: fiori-tools-appreload
       afterMiddleware: compression
       configuration:
@@ -24,5 +29,5 @@ server:
     - name: fiori-tools-preview
       afterMiddleware: fiori-tools-appreload
       configuration:
-        component: zgvt.commodity.upload
-        ui5Theme: sap_horizon
+        component: zgvt.commodity.upload.test
+        ui5Theme: sap_fiori_3

@@ -37,7 +37,7 @@
 				mediaTypes="application/vnd.ms-excel"
 				uploadUrl="../../../../upload"
 				items="{path: '/items', templateShareable: false}"
-				mode="MultiSelect"
+                mode="MultiSelect"      
 				selectionChanged="onSelectionChange" 
                 visible="{model2>/status}">
 
@@ -82,7 +82,7 @@
             visible="{model2>/status}"/>
 	</l:VerticalLayout>
 
-         <Table id="idTable" items="{/}" visible="{model2>/status}">
+         <Table id="idTable" items="{ }" visible="{model2>/status}">
                 <items>
                     <ColumnListItem id ='cliMain'>
                         <cells>
@@ -122,5 +122,5 @@
                 </columns>
             </Table> 
         </content>
-    </Page>
+      </Page>
 </mvc:View>
