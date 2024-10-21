@@ -1,7 +1,7 @@
 {
-  "_version": "1.65.0",
+  "_version": "1.37.0",
   "sap.app": {
-    "id": "zgvt.commodity.upload",
+    "id": "zgvt.commodity.upload.commodityupload",
     "type": "application",
     "i18n": "i18n/i18n.properties",
     "applicationVersion": {
@@ -13,7 +13,7 @@
     "sourceTemplate": {
       "id": "@sap/generator-fiori:basic",
       "version": "1.15.0",
-      "toolsId": "89c0bbf5-2426-4bf4-b064-a0ba83e90f4f"
+      "toolsId": "262310f4-e95a-4ab7-a999-5c5cf634fed2"
     },
     "dataSources": {
       "mainService": {
@@ -46,9 +46,10 @@
   "sap.ui5": {
     "flexEnabled":false,
     "dependencies": {
-      "minUI5Version": "1.128.1",
+      "minUI5Version": "1.96.32",
       "libs": {
         "sap.m": {},
+        "sap.ui.fl": {},
         "sap.ui.core": {}
       }
     },
@@ -60,43 +61,44 @@
       "i18n": {
         "type": "sap.ui.model.resource.ResourceModel",
         "settings": {
-          "bundleName": "zgvt.commodity.upload.i18n.i18n"
+          "bundleName": "zgvt.commodity.upload.commodityupload.i18n.i18n"
         }
+      },
+      "oDataModel": {
+        "dataSource": "mainService",
+        "preload": true,
+        "settings": {}
       }
     },
-    "oMyDataModel": {
-      "dataSource": "mainService",
-      "preload": true,
-      "settings": {}
-    },
-  "resources": {
+    "resources": {
       "css": [
         {
           "uri": "css/style.css"
         }
       ]
+     
     },
     "routing": {
       "config": {
         "routerClass": "sap.m.routing.Router",
         "viewType": "XML",
         "async": true,
-        "viewPath": "zgvt.commodity.upload.view",
+        "viewPath": "zgvt.commodity.upload.commodityupload.view",
         "controlAggregation": "pages",
         "controlId": "app",
         "clearControlAggregation": false
       },
       "routes": [
         {
-          "name": "RouteView1",
+          "name": "RouteMain",
           "pattern": ":?query:",
           "target": [
-            "TargetView1"
+            "TargetMain"
           ]
         }
       ],
       "targets": {
-        "TargetView1": {
+        "TargetMain": {
           "viewType": "XML",
           "transition": "slide",
           "clearControlAggregation": false,
@@ -106,7 +108,7 @@
       }
     },
     "rootView": {
-      "viewName": "zgvt.commodity.upload.view.App",
+      "viewName": "zgvt.commodity.upload.commodityupload.view.App",
       "type": "XML",
       "async": true,
       "id": "App"

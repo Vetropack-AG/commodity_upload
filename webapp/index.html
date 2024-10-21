@@ -9,13 +9,15 @@
         html, body, body > div, #container, #container-uiarea {
             height: 100%;
         }
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.0/jszip.js"></script>
     </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.0/xlsx.js"></script>
     <script
         id="sap-ui-bootstrap"
         src="resources/sap-ui-core.js"
-        data-sap-ui-theme="sap_horizon"
+        data-sap-ui-theme="sap_fiori_3"
         data-sap-ui-resourceroots='{
-            "zgvt.commodity.upload": "./", "zvgt.hppm": "./zvgt/hppm"
+            "zgvt.commodity.upload.commodityupload": "./"
         }'
         data-sap-ui-oninit="module:sap/ui/core/ComponentSupport"
         data-sap-ui-compatVersion="edge"
@@ -26,9 +28,9 @@
 <body class="sapUiBody sapUiSizeCompact" id="content">
     <div
         data-sap-ui-component
-        data-name="zgvt.commodity.upload"
+        data-name="zgvt.commodity.upload.commodityupload"
         data-id="container"
-        data-settings='{"id" : "zgvt.commodity.upload"}'
+        data-settings='{"id" : "zgvt.commodity.upload.commodityupload"}'
         data-handle-validation="true"
     ></div>
 </body>

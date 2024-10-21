@@ -5,7 +5,7 @@ sap.ui.define(
     function(BaseController) {
       "use strict";
   
-      return BaseController.extend("zgvt.commodity.upload.controller.App", {
+      return BaseController.extend("zgvt.commodity.upload.commodityupload.controller.App", {
         onInit: function() {
         }
       });

@@ -1,13 +1,17 @@
-<mvc:View controllerName="zgvt.commodity.upload.controller.Main"
-     displayBlock   ="true"
-    xmlns:mvc       ="sap.ui.core.mvc" 
-    xmlns:u         ="sap.ui.unified" 
-    xmlns:lf        ="sap.ui.layout.form" 
-    xmlns:core      ="sap.ui.core"
-    xmlns:l         ="sap.ui.layout"
-    xmlns:upload    ="sap.m.upload"
-    xmlns           ="sap.m">
-
+<mvc:View controllerName="zgvt.commodity.upload.commodityupload.controller.Main"
+    displayBlock     ="true"
+    xmlns            ="sap.m"
+    xmlns:mvc        ="sap.ui.core.mvc" 
+    xmlns:u          ="sap.ui.unified" 
+    xmlns:core       ="sap.ui.core"
+    xmlns:l          ="sap.ui.layout"
+    xmlns:upload     ="sap.m.upload"
+    xmlns:t          ="sap.ui.table"
+    xmlns:sap.ui.fl  ="sap.ui.fl"
+    xmlns:sap.ui.dt  ="sap.ui.dt"
+    xmlns:vm         ="sap.ui.fl.variants"
+    xmlns:html       ="http://www.w3.org/1999/xhtml"
+	xmlns:app        ="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1">
     <Page id="page" title="{i18n>title}">
       <content>
     	
@@ -15,63 +19,63 @@
 	                	  class="sapUiResponsiveContentPadding"
                 		  width="100%" >
                 <Label id = 'lblMainSelectSchema' text="Select Schema" class= "sapUiTinyMarginTop"></Label>
-                   	<ComboBox
+                   	<ComboBox id ='cbValue'
                             items="{
-                                path: 'model1>/data'
+                                path: 'oSchemaList>/Schema'
                            }"
+                        width = "35%"
 						 change = "handleChange">
-        				<core:Item key="{model1>id}" text="{model1>name}" />
+        				<core:Item key="{oSchemaList>Nosct}" text="{oSchemaList>Text}" />
 						
 			        </ComboBox>
 	    </l:VerticalLayout>
-      
-      		<upload:UploadSet
+         		<upload:UploadSet
 				id="UploadSet"
-				instantUpload="false"
+				instantUpload="true"
 				showIcons="true"
 				uploadEnabled="false"
 				terminationEnabled="true"
 				fileTypes="xlsx"
-				maxFileNameLength="30"
+				maxFileNameLength="50"
 				maxFileSize="200"
-				mediaTypes="application/vnd.ms-excel"
-				uploadUrl="../../../../upload"
-				items="{path: '/items', templateShareable: false}"
-                mode="MultiSelect"      
+                mediaTypes="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+				items="{path: 'oTemplateList>/file', templateShareable: false}"
+               
 				selectionChanged="onSelectionChange" 
+            
                 visible="{model2>/status}">
 
-			<upload:toolbar>
+			<upload:toolbar >
 				<OverflowToolbar>
 					<ToolbarSpacer/>
 					<Button
 							id     ="downloadSelectedButton"
 							text   ="Download Template"
-							press  ="onDownloadSelectedButton"/>
-                    <!-- <Button
-							id="uploadSelectedButton"
-							text="Upload Commodity Excel "
-							press="onUploadSelectedButton"/> -->
-
-					<upload:UploadSetToolbarPlaceholder />
+							press  ="onDownloadSelectedButton"
+                            visible="false"/>
 				</OverflowToolbar>
 			</upload:toolbar>
 			<upload:items>
 				<upload:UploadSetItem
-						fileName     ="{fileName}"
-						mediaType    ="{mediaType}"
-						url          ="{url}"
-						thumbnailUrl ="{thumbnailUrl}"
-						uploadState  ="{uploadState}">
+						fileName     ="{oTemplateList>Filename}"
+						mediaType    ="{oTemplateList>Content}"
+                      
+                        visibleRemove ="false"
+                        visibleEdit    ="false"
+						url          ="/sap/opu/odata/sap/ZVGT_UPLD_COMMCODES_SRV/ET_TemplateSet('{oTemplateList>Nosct}')/$value"
+						
+                        uploadState  ="{uploadState}">
 				</upload:UploadSetItem>
 			</upload:items>
-		</upload:UploadSet>
+            
+		</upload:UploadSet> 
 
-	<l:VerticalLayout >
+	<l:VerticalLayout class= "sapUiSmallMarginBegin">
 		<u:FileUploader
 			id="fileUploader"
 			name="myFileUpload"
-			uploadUrl="upload/"
+            fileType="XLSX,CSV"
+            width = "50%"
 			tooltip="Upload your file to the local server"
 			uploadComplete="handleUploadComplete"
             visible="{model2>/status}"/>
@@ -81,46 +85,72 @@
 			press="handleUploadPress"
             visible="{model2>/status}"/>
 	</l:VerticalLayout>
-
-         <Table id="idTable" items="{ }" visible="{model2>/status}">
-                <items>
-                    <ColumnListItem id ='cliMain'>
-                        <cells>
-                            <Text id='txtMain1' text="{prodno}"></Text>
-                            <Text id='txtMain2' text="{product}"></Text>
-                            <Text id='txtMain3' text="{productname}"></Text>
-                            <Text id='txtMain5' text="{uom}"></Text>
-                            <Text id='txtMain6' text="{uom}"></Text>
-                            <Text id='txtMain7' text="{uom}"></Text>
-							
-                        </cells>
-                    </ColumnListItem>
-                </items>
-                <columns>
-                    <Column id = 'colMain1'>
-                        <Text id='txtMain8' text="Schema Code"></Text>
-                    </Column>
-                    <Column id = 'colMain2'>
-                        <Text id='txtMain9' text="Commodity Code"></Text>
-                    </Column>
-                    <Column id = 'colMain3'>
-                        <Text id='txtMain10' text="Valid From"></Text>
-                    </Column>
-                    <Column id = 'colMain4'>
-                        <Text id='txtMain11' text="Valid To"></Text>
-                    </Column>
-                    <Column id = 'colMain5'>
-                        <Text id='txtMain12' text="1st Unit"></Text>
-                    </Column>
-                    <Column id = 'colMain6'>
-                        <Text id='txtMain13' text="Upload Status"></Text>
-                    </Column>
-                    <Column id = 'colMain7'>
-                        <Text id='txtMain14' text="Errors/Warnings"></Text>
-                    </Column>
-
-                </columns>
-            </Table> 
+        <t:Table id="persoTable" 
+         selectionMode="None"
+         rows="{oReturnMessage>/items}"
+         visible="{model2>/status}">
+       
+         <t:extension>
+                <OverflowToolbar >
+                    <Title id="title" text="Return Logs"/>
+                    <ToolbarSeparator/>
+                     <ToolbarSpacer/>
+                    <Button icon="sap-icon://action-settings" press="openPersoDialog" tooltip="Settings"/>
+                </OverflowToolbar>
+          </t:extension>
+                <t:columns>
+                  <t:Column app:p13nKey="Schema_col" sortProperty="Schema" resizable="true" width="11rem" autoResizable="true">
+                    <Label text="Schema Code" />
+                    <t:template>
+                        <Text text="{oReturnMessage>Schema}"/>
+                    </t:template>
+                 </t:Column>
+                 <t:Column app:p13nKey="Comco_col" sortProperty="Comco" resizable="true" width="11rem" autoResizable="true">
+                    <Label text="Commodity Code" />
+                    <t:template>
+                        <Text text="{oReturnMessage>Comco}"/>
+                    </t:template>
+                 </t:Column>
+                 <t:Column app:p13nKey="Text_col" sortProperty="Text" resizable="true" width="11rem" autoResizable="true">
+                    <Label text="Description" />
+                    <t:template>
+                        <Text text="{oReturnMessage>Text}"/>
+                    </t:template>
+                 </t:Column>
+                 <t:Column app:p13nKey="DATAB_col" sortProperty="DATAB" resizable="true" width="11rem" autoResizable="true">
+                    <Label text="Valid from" />
+                    <t:template>
+                        <Text text="{oReturnMessage>DATAB}"/>
+                    </t:template>
+                 </t:Column>
+                   <t:Column app:p13nKey="DATBI_col" sortProperty="DATBI" resizable="true" width="11rem" autoResizable="true">
+                    <Label text="Valid To" />
+                    <t:template>
+                        <Text text="{oReturnMessage>DATBI}"/>
+                    </t:template>
+                 </t:Column>
+                  <t:Column app:p13nKey="BEMEH_col" sortProperty="BEMEH" resizable="true" width="11rem" autoResizable="true">
+                    <Label text="First Unit" />
+                    <t:template>
+                        <Text text="{oReturnMessage>BEMEH}"/>
+                    </t:template>
+                 </t:Column>
+                    <t:Column app:p13nKey="Status_col" sortProperty="Status" resizable="true" width="11rem" autoResizable="true">
+                    <Label text="Status" />
+                    <t:template>
+                        <Text text="{oReturnMessage>Status}"/>
+                    </t:template>
+                 </t:Column>
+             
+                   <t:Column app:p13nKey="Message_col" sortProperty="Message" resizable="true" width="11rem" autoResizable="true">
+                    <Label text="Messahe" />
+                    <t:template>
+                        <Text text="{oReturnMessage>Message}"/>
+                    </t:template>
+                 </t:Column>
+                </t:columns>
+            </t:Table> 
+    
         </content>
       </Page>
 </mvc:View>

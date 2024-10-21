@@ -5,12 +5,12 @@
 sap.ui.define([
         "sap/ui/core/UIComponent",
         "sap/ui/Device",
-        "zgvt/commodity/upload/model/models"
+        "zgvt/commodity/upload/commodityupload/model/models"
     ],
     function (UIComponent, Device, models) {
         "use strict";
 
-        return UIComponent.extend("zgvt.commodity.upload.Component", {
+        return UIComponent.extend("zgvt.commodity.upload.commodityupload.Component", {
             metadata: {
                 manifest: "json"
             },
@@ -29,8 +29,8 @@ sap.ui.define([
 
                 // set the device model
                 this.setModel(models.createDeviceModel(), "device");
-
-                var oDataSrv = this.getModel("myODataModel");
+                
+                var oDataSrv = this.getModel("oDataModel");
                 this.setModel(oDataSrv, "oDataSrv");
             }
         });
