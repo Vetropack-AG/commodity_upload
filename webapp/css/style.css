@@ -1,1 +1,9 @@
 /* Enter your custom styles here */
+.greenBG
+{
+    color: rgb(77, 192, 31);
+}
+.redBG
+{
+   color: rgb(235, 15, 15);
+}

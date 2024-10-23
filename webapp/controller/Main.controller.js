@@ -5,13 +5,14 @@ sap.ui.define([
     "sap/m/upload/Uploader",
     "sap/m/StandardListItem",
     "sap/m/MessageToast",
-    "sap/m/MessageBox"
-   
+    "sap/m/MessageBox",
+    "sap/ui/core/Fragment",
+    'sap/ui/export/Spreadsheet',
 ],
     /***
      * @param {typeof sap.ui.core.mvc.Controller} Controller
      */
-    function (Controller, Item, JSONModel, Uploader, ListItem, MessageToast, MessageBox) {
+    function (Controller, Item, JSONModel, Uploader, ListItem, MessageToast, MessageBox, Fragment, Spreadsheet) {
         "use strict";
 
         return Controller.extend("zgvt.commodity.upload.commodityupload.controller.Main", {
@@ -36,23 +37,58 @@ sap.ui.define([
                     error: function (oError) {
                         consol.show("Ërror reading ET_SchemaSet!!");
                     }
-                    
+
                 });
 
-            
+
                 // To handle dynamic visibility of objects
                 var oData2 = {
                     status: false,
                     status1: false
                 };
 
-                 // Create a JSON model and set the data
-                 var oModel2 = new JSONModel(oData2);
+                // Create a JSON model and set the data
+                var oModel2 = new JSONModel(oData2);
 
-                 // Set the model to the view
-                 this.getView().setModel(oModel2, 'model2');
+                // Set the model to the view
+                this.getView().setModel(oModel2, 'model2');
 
-         //        this._registerForP13n();
+                // To handle dynamic visibility of objects
+                var oData3 = {
+                    columns: [
+                        { name: "Schema", visible: true, id: "Schema" },
+                        { name: "Commoity", visible: true, id: "Commoity" },
+                        { name: "Description", visible: true, id: "Description" },
+                        { name: "Description En", visible: true, id: "DescriptionEn" },
+                        { name: "First Unit", visible: true, id: "FirstUnit" },
+                        { name: "Valid From", visible: true, id: "ValiFfrom" },
+                        { name: "Valid To", visible: true, id: "ValidTo" },
+                        { name: "Status", visible: true, id: "Status" },
+                        { name: "Message", visible: true, id: "Message" }
+                    ]
+                };
+
+                // Create a JSON model and set the data
+                var oModel3 = new JSONModel(oData3);
+
+                // Set the model to the view
+                this.getView().setModel(oModel3, 'model3');
+
+                // Get Table name
+
+                var oTable = this.getView().byId("responseTable");
+
+                //Get all columns
+                var oColumns = oModel3.getProperty("/columns");
+
+                //Dynamically add Columnd to Table
+                oColumns.forEach(function (oColData) {
+                    oTable.addColumn(new sap.m.Column({
+                        id: oColData.id,
+                        header: new sap.m.Label({ text: oColData.name }),
+                        visible: oColData.visible
+                    }));
+                });
             },
 
             onUploadSelectedButton: function () {
@@ -93,66 +129,74 @@ sap.ui.define([
 
             handleChange: function (oEvent) {
                 var that = this;
+
+                var oldJSONModel = that.getView().getModel("oReturnMessage");
+                if ( oldJSONModel)
+                {
+                    oldJSONModel.refresh(true);
+                    oldJSONModel.setData([]);
+                  //  that.getView().byId("fileUploader").setText = "";
+                }
                 var oDataModel = this.getOwnerComponent().getModel('oDataSrv');
-              //Declaration of JSON model for List Disply
+                //Declaration of JSON model for List Disply
                 var oTemplateList = new JSONModel();
                 var oValidatedComboBox = oEvent.getSource();
 
                 if (oValidatedComboBox.getSelectedKey() != '') {
-                    var filter1= new sap.ui.model.Filter({
+                    var filter1 = new sap.ui.model.Filter({
                         path: "Nosct",
                         operator: sap.ui.model.FilterOperator.EQ,
                         value1: oValidatedComboBox.getSelectedKey()
                     });
-                //Call to oData Entity Template List
-                oDataModel.read("/ET_TemplateSet", {
-                    filters : [filter1], 
-                    success: function (oData) {
-                        oTemplateList.setData({ file: oData.results });
-                        that.getView().setModel(oTemplateList, "oTemplateList");
-                    },
-                    error: function (oError) {
-                        consol.show("Ërror reading ET_TemplateSet!!");
-                    }
-                });                   
+                    //Call to oData Entity Template List
+                    oDataModel.read("/ET_TemplateSet", {
+                        filters: [filter1],
+                        success: function (oData) {
+                            oTemplateList.setData({ file: oData.results });
+                            that.getView().setModel(oTemplateList, "oTemplateList");
+                        },
+                        error: function (oError) {
+                            consol.show("Ërror reading ET_TemplateSet!!");
+                        }
+                    });
                     ///  change propeerty of UPload, Download & Table to Visible using local model dynamically
                     this.getView().getModel('model2').setProperty('/status', true);
                 }
                 else {
                     //// change propeerty of UPload, Download & Table to Visible using local model dynamically
                     this.getView().getModel('model2').setProperty('/status', false);
-                    this.getView().getModel('model2').setProperty('/status1', false); 
+                    this.getView().getModel('model2').setProperty('/status1', false);
                 }
             },
-      
-            postCommCodeToBackend : function(oContent) {
+
+            postCommCodeToBackend: function (oContent) {
                 var oDataModel = this.getOwnerComponent().getModel('oDataSrv');
                 var that = this;
 
-                var oPayload = 
+                var oPayload =
                 {
-                    "Schema" :this.getView().byId('cbValue').getSelectedKey(),
-                    "Key"    : "X",
-                    "Value"  : btoa(unescape(encodeURIComponent(oContent))),
+                    "Schema": this.getView().byId('cbValue').getSelectedKey(),
+                    "Key": "X",
+                    "Value": btoa(unescape(encodeURIComponent(oContent))),
                     "CommUploadStautus":
-                    [{
-                        "Schema" :" ",
-                        "Comco"  :" ",
-                        "DATAB"  :" ",
-                        "DATBI"  :" ",
-                        "BEMEH"  :" ",
-                        "TextEn" :" ",
-                        "Text"   :" ",
-                        "Status" :" ",
-                        "Message":" "
-                    }]
+                        [{
+                            "Schema": " ",
+                            "Comco": " ",
+                            "DATAB": " ",
+                            "DATBI": " ",
+                            "BEMEH": " ",
+                            "TextEn": " ",
+                            "Text": " ",
+                            "Status": " ",
+                            "Message": " "
+                        }]
                 };
-    
+
                 var oReturnMessage = new JSONModel();
                 //Call to oData Entity to upload commodity code
                 oDataModel.create("/FileUploadCommoditySet", oPayload, {
-                    method : "POST",
-                    async   : false,
+                    method: "POST",
+                    async: false,
                     success: function (oData) {
                         debugger;
                         oReturnMessage.setData({ items: oData.CommUploadStautus.results });
@@ -160,251 +204,193 @@ sap.ui.define([
                         that.showTable();
                     },
                     error: function (oError) {
-                     console.log("Error Uploading File!!");
-/*                 
-                     sap.m.MessageBox.show(
-                         oError.message,
-                         sap.m.MessageBox.Icon.ERROR,
-                         "Error In oData Service"
-                     );  */
+                        console.log("Error Uploading File!!");
+                        /*                 
+                                             sap.m.MessageBox.show(
+                                                 oError.message,
+                                                 sap.m.MessageBox.Icon.ERROR,
+                                                 "Error In oData Service"
+                                             );  */
                     }
-                });    
+                });
             },
-            showTable :function()
-            {
-                
-                this.getView().getModel('model2').setProperty('/status1', true); 
-                var oTable = this.getView().byId('idTable');
-                var aItems = oTable.getItems();
-                if ( aItems.length > 0 )
-                    {
-                        for (var i = 0; i < aItems.length; i++)
-                            {
-                                var aCells = aItems[i].getCells();
-                                if ( aItems[i].getCells()[7].getText() === 'Fail' )
-                                    {
-                                        aItems[i].getCells()[7].addStyleClass("redBG");
-                                        aItems[i].getCells()[8].addStyleClass("redBG");
+            showTable: function () {
 
-                                    }
-                                else
-                                {
-                                    aItems[i].getCells()[7].addStyleClass("greenBG");
-                                    aItems[i].getCells()[8].addStyleClass("greenBG");
-                                }    
-                            }
+                this.getView().getModel('model2').setProperty('/status1', true);
+                var oTable = this.getView().byId('responseTable');
+                var aItems = oTable.getItems();
+                if (aItems.length > 0) {
+                    for (var i = 0; i < aItems.length; i++) {
+                        var aCells = aItems[i].getCells();
+                        if (aItems[i].getCells()[7].getText() === 'Fail') {
+                            aItems[i].getCells()[7].addStyleClass("redBG");
+                            aItems[i].getCells()[8].addStyleClass("redBG");
+
+                        }
+                        else {
+                            aItems[i].getCells()[7].addStyleClass("greenBG");
+                            aItems[i].getCells()[8].addStyleClass("greenBG");
+                        }
                     }
+                MessageToast.show("File Processed!!");
+                }
             },
             handleUploadPress: function (oEvent) {
-                 var that = this;
+                var that = this;
 
                 var oFileName = this.getView().byId("fileUploader").getValue();
-                if (!oFileName)
-                    {
-                        MessageToast.show("File is not excel type.Loading failed");
-               //         MessageBox.error("File is not excel type.Loading failed");
-                        this.getView().getModel('model2').setProperty('/status1', false); 
-                    }
-                 else
-                 {
-                  
-                var oFileUploader = this.getView().byId("fileUploader");
-                var oDomRef       = oFileUploader.getFocusDomRef();
-                var oFile      = oDomRef.files[0];
-                var  reader = new FileReader();
-                reader.onload = function(evt)
-                {
-                    var oData = evt.target.result;
-  					var workbook = XLSX.read(oData, 
-                    {
-						type: 'binary'
-					});
-                    var oSheetName = workbook.SheetNames[0];
-                    var oExcelData = XLSX.utils.sheet_to_json(workbook.Sheets[oSheetName]);
-                    var oJsonString = JSON.stringify(oExcelData);
-                    that.postCommCodeToBackend(oJsonString);
-                    
-                };
-                reader.readAsBinaryString(oFile);
+                if (!oFileName) {
+                    MessageToast.show("File is not excel type.Loading failed");
+                    //         MessageBox.error("File is not excel type.Loading failed");
+                    this.getView().getModel('model2').setProperty('/status1', false);
+                }
+                else {
 
-                 }   
+                    var oFileUploader = this.getView().byId("fileUploader");
+                    var oDomRef = oFileUploader.getFocusDomRef();
+                    var oFile = oDomRef.files[0];
+                    var reader = new FileReader();
+                    reader.onload = function (evt) {
+                        var oData = evt.target.result;
+                        var workbook = XLSX.read(oData,
+                            {
+                                type: 'binary'
+                            });
+                        var oSheetName = workbook.SheetNames[0];
+                        var oExcelData = XLSX.utils.sheet_to_json(workbook.Sheets[oSheetName]);
+                        var oJsonString = JSON.stringify(oExcelData);
+                        that.postCommCodeToBackend(oJsonString);
 
-            },
-            _registerForP13n: function() {
-                const oTable = this.byId("persoTable");
-    
-                this.oMetadataHelper = new MetadataHelper([{
-                        key: "firstName_col",
-                        label: "First Name",
-                        path: "firstName"
-                    },
-                    {
-                        key: "lastName_col",
-                        label: "Last Name",
-                        path: "lastName"
-                    },
-                    {
-                        key: "city_col",
-                        label: "City",
-                        path: "city"
-                    },
-                    {
-                        key: "size_col",
-                        label: "Size",
-                        path: "size"
-                    }
-                ]);
-    
-                this._mIntialWidth = {
-                    "firstName_col": "11rem",
-                    "lastName_col": "11rem",
-                    "city_col": "11rem",
-                    "size_col": "11rem"
-                };
-    
-                Engine.getInstance().register(oTable, {
-                    helper: this.oMetadataHelper,
-                    controller: {
-                        Columns: new SelectionController({
-                            targetAggregation: "columns",
-                            control: oTable
-                        }),
-                        Sorter: new SortController({
-                            control: oTable
-                        }),
-                        Groups: new GroupController({
-                            control: oTable
-                        }),
-                        ColumnWidth: new ColumnWidthController({
-                            control: oTable
-                        })
-                    }
-                });
-    
-                Engine.getInstance().attachStateChange(this.handleStateChange.bind(this));
-            },
-    
-            openPersoDialog: function(oEvt) {
-                const oTable = this.byId("persoTable");
-    
-                Engine.getInstance().show(oTable, ["Columns", "Sorter"], {
-                    contentHeight: "35rem",
-                    contentWidth: "32rem",
-                    source: oEvt.getSource()
-                });
-            },
-    
-            onColumnHeaderItemPress: function(oEvt) {
-                const oTable = this.byId("persoTable");
-                const sPanel = oEvt.getSource().getIcon().indexOf("sort") >= 0 ? "Sorter" : "Columns";
-    
-                Engine.getInstance().show(oTable, [sPanel], {
-                    contentHeight: "35rem",
-                    contentWidth: "32rem",
-                    source: oTable
-                });
-            },
-    
-            onSort: function(oEvt) {
-                const oTable = this.byId("persoTable");
-                const sAffectedProperty = this._getKey(oEvt.getParameter("column"));
-                const sSortOrder = oEvt.getParameter("sortOrder");
-    
-                //Apply the state programatically on sorting through the column menu
-                //1) Retrieve the current personalization state
-                Engine.getInstance().retrieveState(oTable).then(function(oState) {
-    
-                    //2) Modify the existing personalization state --> clear all sorters before
-                    oState.Sorter.forEach(function(oSorter) {
-                        oSorter.sorted = false;
-                    });
-                    oState.Sorter.push({
-                        key: sAffectedProperty,
-                        descending: sSortOrder === CoreLibrary.SortOrder.Descending
-                    });
-    
-                    //3) Apply the modified personalization state to persist it in the VariantManagement
-                    Engine.getInstance().applyState(oTable, oState);
-                });
-            },
-    
-            onColumnMove: function(oEvt) {
-                const oTable = this.byId("persoTable");
-                const oAffectedColumn = oEvt.getParameter("column");
-                const iNewPos = oEvt.getParameter("newPos");
-                const sKey = this._getKey(oAffectedColumn);
-                oEvt.preventDefault();
-    
-                Engine.getInstance().retrieveState(oTable).then(function(oState) {
-    
-                    const oCol = oState.Columns.find(function(oColumn) {
-                        return oColumn.key === sKey;
-                    }) || {
-                        key: sKey
                     };
-                    oCol.position = iNewPos;
-    
-                    Engine.getInstance().applyState(oTable, {
-                        Columns: [oCol]
+                    reader.readAsBinaryString(oFile);
+
+                }
+
+            },
+            openPersoDialog: function () {
+                var oView = this.getView();
+                if (!this._pPersoDialog) {
+                    this._pPersoDialog = Fragment.load({
+                        id: oView.getId(),
+                        name: "zgvt.commodity.upload.commodityupload.view.fragment.PerDialog",
+                        controller: this
+                    }).then(function (oDialog) {
+                        oView.addDependent(oDialog);
+                        return oDialog
                     });
+                }
+                this._pPersoDialog.then(function (oDialog) {
+                    oDialog.open();
                 });
             },
-    
-            _getKey: function(oControl) {
-                return oControl.data("p13nKey");
+            onPressCancel: function () {
+                this.getView().byId("myDialog").close();
             },
+            onPressOk: function () {
+                var oList = this.getView().byId("idColumn");
+
+                var aItems = oList.getItems();
+                aItems.forEach(function (oItem, index) {
+                    var oColumn = oItem.getSelected();
+
+                    if (oColumn) {
+                        this.getView().byId("responseTable").getColumns()[index].setVisible(true);
+                    }
+                    else {
+                        this.getView().byId("responseTable").getColumns()[index].setVisible(false);
+                    }
+
+                }.bind(this));
+                this.getView().byId("myDialog").close();
+            },
+            onExport: function() {
+                var aCols, oRowBinding, oSettings, oSheet, oTable;
+               
     
-            handleStateChange: function(oEvt) {
-                const oTable = this.byId("persoTable");
-                const oState = oEvt.getParameter("state");
-    
-                if (!oState) {
-                    return;
+                if (!this._oTable) {
+                    this._oTable = this.byId('responseTable');
                 }
     
-                oTable.getColumns().forEach(function(oColumn) {
+                oTable = this._oTable;
+                oRowBinding = oTable.getBinding('items');
+                aCols = this.createColumnConfig();
     
-                    const sKey = this._getKey(oColumn);
-                    const sColumnWidth = oState.ColumnWidth[sKey];
+                oSettings = {
+                    workbook: {
+                        columns: aCols,
+                        hierarchyLevel: 'Level'
+                    },
+                    dataSource: oRowBinding,
+                    fileName: 'Result.xlsx',
+                    worker: false // We need to disable worker because we are using a MockServer as OData Service
+                };
     
-                    oColumn.setWidth(sColumnWidth || this._mIntialWidth[sKey]);
-    
-                    oColumn.setVisible(false);
-                    oColumn.setSortOrder(CoreLibrary.SortOrder.None);
-                }.bind(this));
-    
-                oState.Columns.forEach(function(oProp, iIndex) {
-                    const oCol = this.byId("persoTable").getColumns().find((oColumn) => oColumn.data("p13nKey") === oProp.key);
-                    oCol.setVisible(true);
-    
-                    oTable.removeColumn(oCol);
-                    oTable.insertColumn(oCol, iIndex);
-                }.bind(this));
-    
-                const aSorter = [];
-                oState.Sorter.forEach(function(oSorter) {
-                    const oColumn = this.byId("persoTable").getColumns().find((oColumn) => oColumn.data("p13nKey") === oSorter.key);
-                    /** @deprecated As of version 1.120 */
-                    oColumn.setSorted(true);
-                    oColumn.setSortOrder(oSorter.descending ? CoreLibrary.SortOrder.Descending : CoreLibrary.SortOrder.Ascending);
-                    aSorter.push(new Sorter(this.oMetadataHelper.getProperty(oSorter.key).path, oSorter.descending));
-                }.bind(this));
-                oTable.getBinding("rows").sort(aSorter);
-            },
-    
-            onColumnResize: function(oEvt) {
-                const oColumn = oEvt.getParameter("column");
-                const sWidth = oEvt.getParameter("width");
-                const oTable = this.byId("persoTable");
-    
-                const oColumnState = {};
-                oColumnState[this._getKey(oColumn)] = sWidth;
-    
-                Engine.getInstance().applyState(oTable, {
-                    ColumnWidth: oColumnState
+                oSheet = new Spreadsheet(oSettings);
+                oSheet.build().finally(function() {
+                    oSheet.destroy();
                 });
-            }
-   
+            },
+            createColumnConfig: function() {
+                var aCols = [];
     
+                aCols.push({
+                    label: 'Schema',
+                    property: 'Schema',
+                    type: String
+                });
+    
+                aCols.push({
+                    label: 'Commoity',
+                    property: 'Comco',
+                    type: String
+                });
+    
+                aCols.push({
+                    label: 'Description',
+                    property: 'Text',
+                    type: String
+                });
+    
+                aCols.push({
+                    label: 'Description En',
+                    property: 'Texten',
+                    type: String
+                });
+               
+                
+                aCols.push({
+                    label: ' First Unit',
+                    property: 'BEMEH',
+                    type: String                    
+                });
+    
+                Status
+                Message
+                aCols.push({
+                    label: 'Valid From',
+                    property: 'DATAB',
+                    type: Date
+                });
+    
+                aCols.push({
+                    label: 'Valid To',
+                    property: 'DATBI',
+                    type: Date
+                });
+    
+              
+                aCols.push({
+                    label: 'Status',
+                    property: 'Status',
+                    type: String      
+                });
+                aCols.push({
+                    label: 'Message',
+                    property: 'Message',
+                    type: String      
+                });
+    
+                return aCols;
+            }
         });
     });

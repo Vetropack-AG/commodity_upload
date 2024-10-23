@@ -5,13 +5,8 @@
     xmlns:u          ="sap.ui.unified" 
     xmlns:core       ="sap.ui.core"
     xmlns:l          ="sap.ui.layout"
-    xmlns:upload     ="sap.m.upload"
-    xmlns:t          ="sap.ui.table"
-    xmlns:sap.ui.fl  ="sap.ui.fl"
-    xmlns:sap.ui.dt  ="sap.ui.dt"
-    xmlns:vm         ="sap.ui.fl.variants"
-    xmlns:html       ="http://www.w3.org/1999/xhtml"
-	xmlns:app        ="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1">
+    xmlns:upload     ="sap.m.upload">
+ 
     <Page id="page" title="{i18n>title}">
       <content>
     	
@@ -29,7 +24,7 @@
 						
 			        </ComboBox>
 	    </l:VerticalLayout>
-         		<upload:UploadSet
+        <upload:UploadSet
 				id="UploadSet"
 				instantUpload="true"
 				showIcons="true"
@@ -85,72 +80,36 @@
 			press="handleUploadPress"
             visible="{model2>/status}"/>
 	</l:VerticalLayout>
-        <t:Table id="persoTable" 
-         selectionMode="None"
-         rows="{oReturnMessage>/items}"
+     
+        <Table id="responseTable" 
+         items="{oReturnMessage>/items}"
          visible="{model2>/status}">
-       
-         <t:extension>
-                <OverflowToolbar >
-                    <Title id="title" text="Return Logs"/>
-                    <ToolbarSeparator/>
-                     <ToolbarSpacer/>
-                    <Button icon="sap-icon://action-settings" press="openPersoDialog" tooltip="Settings"/>
-                </OverflowToolbar>
-          </t:extension>
-                <t:columns>
-                  <t:Column app:p13nKey="Schema_col" sortProperty="Schema" resizable="true" width="11rem" autoResizable="true">
-                    <Label text="Schema Code" />
-                    <t:template>
-                        <Text text="{oReturnMessage>Schema}"/>
-                    </t:template>
-                 </t:Column>
-                 <t:Column app:p13nKey="Comco_col" sortProperty="Comco" resizable="true" width="11rem" autoResizable="true">
-                    <Label text="Commodity Code" />
-                    <t:template>
-                        <Text text="{oReturnMessage>Comco}"/>
-                    </t:template>
-                 </t:Column>
-                 <t:Column app:p13nKey="Text_col" sortProperty="Text" resizable="true" width="11rem" autoResizable="true">
-                    <Label text="Description" />
-                    <t:template>
-                        <Text text="{oReturnMessage>Text}"/>
-                    </t:template>
-                 </t:Column>
-                 <t:Column app:p13nKey="DATAB_col" sortProperty="DATAB" resizable="true" width="11rem" autoResizable="true">
-                    <Label text="Valid from" />
-                    <t:template>
-                        <Text text="{oReturnMessage>DATAB}"/>
-                    </t:template>
-                 </t:Column>
-                   <t:Column app:p13nKey="DATBI_col" sortProperty="DATBI" resizable="true" width="11rem" autoResizable="true">
-                    <Label text="Valid To" />
-                    <t:template>
-                        <Text text="{oReturnMessage>DATBI}"/>
-                    </t:template>
-                 </t:Column>
-                  <t:Column app:p13nKey="BEMEH_col" sortProperty="BEMEH" resizable="true" width="11rem" autoResizable="true">
-                    <Label text="First Unit" />
-                    <t:template>
-                        <Text text="{oReturnMessage>BEMEH}"/>
-                    </t:template>
-                 </t:Column>
-                    <t:Column app:p13nKey="Status_col" sortProperty="Status" resizable="true" width="11rem" autoResizable="true">
-                    <Label text="Status" />
-                    <t:template>
-                        <Text text="{oReturnMessage>Status}"/>
-                    </t:template>
-                 </t:Column>
-             
-                   <t:Column app:p13nKey="Message_col" sortProperty="Message" resizable="true" width="11rem" autoResizable="true">
-                    <Label text="Messahe" />
-                    <t:template>
-                        <Text text="{oReturnMessage>Message}"/>
-                    </t:template>
-                 </t:Column>
-                </t:columns>
-            </t:Table> 
-    
+         <headerToolbar>
+            <OverflowToolbar >
+                <Title id="title" text="Return Logs"/>
+                <ToolbarSeparator/>
+                    <ToolbarSpacer/>
+                <Button icon="sap-icon://action-settings" press="openPersoDialog" tooltip="Settings"/>
+              	<Button icon="sap-icon://excel-attachment" press="onExport"/>
+
+            </OverflowToolbar>
+           </headerToolbar>    
+             <items>
+                    <ColumnListItem id ='cliMain'>
+                        <cells>
+                            <Text id='txtMain1' text="{oReturnMessage>Schema}"></Text>
+                            <Text id='txtMain2' text="{oReturnMessage>Comco}" ></Text>
+                            <Text id='txtMain3' text="{oReturnMessage>Text}"></Text>
+                            <Text id='txtMain4' text="{oReturnMessage>Texten}"></Text>
+                            <Text id='txtMain5' text="{oReturnMessage>DATAB}"></Text>
+                            <Text id='txtMain6' text="{oReturnMessage>DATBI}"></Text>
+                            <Text id='txtMain7' text="{oReturnMessage>BEMEH}"></Text>
+                            <Text id='txtMain8' text="{oReturnMessage>Status}"></Text>
+			               <Text id='txtMain9' text="{oReturnMessage>Message}"></Text>
+                        </cells>
+                    </ColumnListItem> 
+                </items>
+                  </Table> 
         </content>
-      </Page>
+    </Page>
 </mvc:View>
