@@ -5,12 +5,12 @@
 sap.ui.define([
         "sap/ui/core/UIComponent",
         "sap/ui/Device",
-        "zgvt/commodity/upload/commodityupload/model/models"
+        "zgvt/upload/commodityupload/model/models"
     ],
     function (UIComponent, Device, models) {
         "use strict";
 
-        return UIComponent.extend("zgvt.commodity.upload.commodityupload.Component", {
+        return UIComponent.extend("zgvt.upload.commodityupload.Component", {
             metadata: {
                 manifest: "json"
             },

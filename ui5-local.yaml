@@ -2,7 +2,7 @@
 
 specVersion: "3.1"
 metadata:
-  name: zgvt.commodity.upload.commodityupload
+  name: zgvt.upload.commodityupload
 type: application
 framework:
   name: SAPUI5
@@ -42,5 +42,5 @@ server:
     - name: fiori-tools-preview
       afterMiddleware: fiori-tools-appreload
       configuration:
-        component: zgvt.commodity.upload.commodityupload
+        component: zgvt.upload.commodityupload
         ui5Theme: sap_fiori_3

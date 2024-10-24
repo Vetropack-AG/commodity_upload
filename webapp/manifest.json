@@ -1,7 +1,7 @@
 {
   "_version": "1.37.0",
   "sap.app": {
-    "id": "zgvt.commodity.upload.commodityupload",
+    "id": "zgvt.upload.commodityupload",
     "type": "application",
     "i18n": "i18n/i18n.properties",
     "applicationVersion": {
@@ -61,7 +61,7 @@
       "i18n": {
         "type": "sap.ui.model.resource.ResourceModel",
         "settings": {
-          "bundleName": "zgvt.commodity.upload.commodityupload.i18n.i18n"
+          "bundleName": "zgvt.upload.commodityupload.i18n.i18n"
         }
       },
       "oDataModel": {
@@ -83,7 +83,7 @@
         "routerClass": "sap.m.routing.Router",
         "viewType": "XML",
         "async": true,
-        "viewPath": "zgvt.commodity.upload.commodityupload.view",
+        "viewPath": "zgvt.upload.commodityupload.view",
         "controlAggregation": "pages",
         "controlId": "app",
         "clearControlAggregation": false
@@ -108,7 +108,7 @@
       }
     },
     "rootView": {
-      "viewName": "zgvt.commodity.upload.commodityupload.view.App",
+      "viewName": "zgvt.upload.commodityupload.view.App",
       "type": "XML",
       "async": true,
       "id": "App"

@@ -15,7 +15,7 @@ sap.ui.define([
     function (Controller, Item, JSONModel, Uploader, ListItem, MessageToast, MessageBox, Fragment, Spreadsheet) {
         "use strict";
 
-        return Controller.extend("zgvt.commodity.upload.commodityupload.controller.Main", {
+        return Controller.extend("zgvt.upload.commodityupload.controller.Main", {
             onInit: function () {
 
                 // Declaration of  Global Data model 
@@ -35,7 +35,7 @@ sap.ui.define([
                         that.getView().setModel(oSchemaList, "oSchemaList");
                     },
                     error: function (oError) {
-                        consol.show("Ërror reading ET_SchemaSet!!");
+                        console.show("Ërror reading ET_SchemaSet!!");
                     }
 
                 });
@@ -222,7 +222,7 @@ sap.ui.define([
                 if (aItems.length > 0) {
                     for (var i = 0; i < aItems.length; i++) {
                         var aCells = aItems[i].getCells();
-                        if (aItems[i].getCells()[7].getText() === 'Fail') {
+                        if (aItems[i].getCells()[7].getText() == 'Fail') {
                             aItems[i].getCells()[7].addStyleClass("redBG");
                             aItems[i].getCells()[8].addStyleClass("redBG");
 
@@ -272,7 +272,7 @@ sap.ui.define([
                 if (!this._pPersoDialog) {
                     this._pPersoDialog = Fragment.load({
                         id: oView.getId(),
-                        name: "zgvt.commodity.upload.commodityupload.view.fragment.PerDialog",
+                        name: "zgvt.upload.commodityupload.view.fragment.PerDialog",
                         controller: this
                     }).then(function (oDialog) {
                         oView.addDependent(oDialog);
