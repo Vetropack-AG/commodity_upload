@@ -57,7 +57,7 @@ sap.ui.define([
                 var oData3 = {
                     columns: [
                         { name: "Schema", visible: true, id: "Schema" },
-                        { name: "Commoity", visible: true, id: "Commoity" },
+                        { name: "Commodity", visible: true, id: "Commodity" },
                         { name: "Description", visible: true, id: "Description" },
                         { name: "Description En", visible: true, id: "DescriptionEn" },
                         { name: "First Unit", visible: true, id: "FirstUnit" },
@@ -129,13 +129,21 @@ sap.ui.define([
 
             handleChange: function (oEvent) {
                 var that = this;
-
+                var oFileUploader = that.getView().byId("fileUploader");
                 var oldJSONModel = that.getView().getModel("oReturnMessage");
+                oFileUploader.checkFileReadable().then(function() {
+                    console.log("Clear File Name");
+                 }, function(error) {
+                     console.log("Clear File Name")
+                 }).then(function() {
+                     oFileUploader.clear();
+                 });
+          
                 if ( oldJSONModel)
                 {
                     oldJSONModel.refresh(true);
                     oldJSONModel.setData([]);
-                  //  that.getView().byId("fileUploader").setText = "";
+    
                 }
                 var oDataModel = this.getOwnerComponent().getModel('oDataSrv');
                 //Declaration of JSON model for List Disply
@@ -197,7 +205,7 @@ sap.ui.define([
                 oDataModel.create("/FileUploadCommoditySet", oPayload, {
                     method: "POST",
                     async: false,
-                    success: function (oData) {
+                    success: function (oData, oResponse) {
                         debugger;
                         oReturnMessage.setData({ items: oData.CommUploadStautus.results });
                         that.getView().setModel(oReturnMessage, "oReturnMessage");
@@ -340,7 +348,7 @@ sap.ui.define([
                 });
     
                 aCols.push({
-                    label: 'Commoity',
+                    label: 'Commodity',
                     property: 'Comco',
                     type: String
                 });

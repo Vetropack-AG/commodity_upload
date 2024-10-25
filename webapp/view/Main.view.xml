@@ -98,14 +98,26 @@
                     <ColumnListItem id ='cliMain'>
                         <cells>
                             <Text id='txtMain1' text="{oReturnMessage>Schema}"></Text>
-                            <Text id='txtMain2' text="{oReturnMessage>Comco}" ></Text>
+                            <Text id='txtMain2' text="{oReturnMessage>Comco}"></Text>
                             <Text id='txtMain3' text="{oReturnMessage>Text}"></Text>
                             <Text id='txtMain4' text="{oReturnMessage>Texten}"></Text>
                             <Text id='txtMain7' text="{oReturnMessage>BEMEH}"></Text>
-                            <Text id='txtMain5' text="{oReturnMessage>DATAB}"></Text>
-                            <Text id='txtMain6' text="{oReturnMessage>DATBI}"></Text>
+                            <Text id='txtMain5' text="{
+                                                    path : 'oReturnMessage>DATAB',
+                                                    type :'sap.ui.model.odata.type.Date',
+                                                    formatOptions: {
+                                                     pattern : 'dd.MM.yyyy'  
+                                                     }
+                            }"></Text>
+                            <Text id='txtMain6' text="{
+                                                    path : 'oReturnMessage>DATBI',
+                                                    type :'sap.ui.model.odata.type.Date',
+                                                    formatOptions: {
+                                                     pattern : 'dd.MM.yyyy'  
+                                                     }
+                            }"></Text>
                             <Text id='txtMain8' text="{oReturnMessage>Status}"></Text>
-			               <Text id='txtMain9' text="{oReturnMessage>Message}"></Text>
+			               <Text id='txtMain9'  text="{oReturnMessage>Message}"></Text>
                         </cells>
                     </ColumnListItem> 
                 </items>
