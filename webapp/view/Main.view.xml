@@ -69,8 +69,8 @@
 		<u:FileUploader
 			id="fileUploader"
 			name="myFileUpload"
-            fileType="XLSX,CSV"
-            width = "50%"
+            fileType="XLSX"
+            width = "200%"
 			tooltip="Upload your file to the local server"
 			uploadComplete="handleUploadComplete"
             visible="{model2>/status}"/>

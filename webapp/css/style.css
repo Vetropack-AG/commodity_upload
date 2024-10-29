@@ -1,9 +1,9 @@
 /* Enter your custom styles here */
 .greenBG
 {
-    color: rgb(77, 192, 31);
+    color: rgb(77, 192, 31) !important;
 }
 .redBG
 {
-   color: rgb(235, 15, 15);
+   color: rgb(235, 15, 15) !important;
 }
