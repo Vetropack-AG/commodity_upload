@@ -70,8 +70,8 @@
 			id="fileUploader"
 			name="myFileUpload"
             fileType="XLSX"
-            width = "200%"
-			tooltip="Upload your file to the local server"
+            width = "500px"
+			tooltip="Upload your file"
 			uploadComplete="handleUploadComplete"
             visible="{model2>/status}"/>
             
@@ -100,7 +100,7 @@
                             <Text id='txtMain1' text="{oReturnMessage>Schema}"></Text>
                             <Text id='txtMain2' text="{oReturnMessage>Comco}"></Text>
                             <Text id='txtMain3' text="{oReturnMessage>Text}"></Text>
-                            <Text id='txtMain4' text="{oReturnMessage>Texten}"></Text>
+                            <Text id='txtMain4' text="{oReturnMessage>TextEn}"></Text>
                             <Text id='txtMain7' text="{oReturnMessage>BEMEH}"></Text>
                             <Text id='txtMain5' text="{
                                                     path : 'oReturnMessage>DATAB',

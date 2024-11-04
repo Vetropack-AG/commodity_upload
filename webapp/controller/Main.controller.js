@@ -212,14 +212,10 @@ sap.ui.define([
                         that.showTable();
                     },
                     error: function (oError) {
-                        console.log("Error Uploading File!!");
-                        MessageToast.show("Error In oData Service");
-                        /*                 
-                                             sap.m.MessageBox.show(
-                                                 oError.message,
-                                                 sap.m.MessageBox.Icon.ERROR,
-                                                 "Error In oData Service"
-                                             );  */
+                       var oErrResponse = JSON.parse(oError.responseText);
+                       var sErrResponse = oErrResponse.error.message.value;  
+                       sap.m.MessageBox.error("Error: " + sErrResponse );
+   
                     }
                 });
             },
