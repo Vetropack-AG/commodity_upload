@@ -227,12 +227,13 @@ sap.ui.define([
                 if (aItems.length > 0) {
                     for (var i = 0; i < aItems.length; i++) {
                         var aCells = aItems[i].getCells();
-                        if (aItems[i].getCells()[7].getText() == 'Fail') {
+                        if (aItems[i].getCells()[7].getText() == 'Fail') 
+                         {
                             aItems[i].getCells()[7].addStyleClass("redBG");
                             aItems[i].getCells()[8].addStyleClass("redBG");
-
                         }
-                        else {
+                        else 
+                        {
                             aItems[i].getCells()[7].addStyleClass("greenBG");
                             aItems[i].getCells()[8].addStyleClass("greenBG");
                         }
@@ -242,7 +243,13 @@ sap.ui.define([
             },
             handleUploadPress: function (oEvent) {
                 var that = this;
-
+                var oldJSONModel = that.getView().getModel("oReturnMessage");
+                if ( oldJSONModel)
+                    {
+                        oldJSONModel.refresh(true);
+                        oldJSONModel.setData([]);
+        
+                    }
                 var oFileName = this.getView().byId("fileUploader").getValue();
                 if (!oFileName) {
                     MessageToast.show("File is not excel type.Loading failed");
