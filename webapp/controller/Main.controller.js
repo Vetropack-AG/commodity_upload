@@ -100,6 +100,16 @@ sap.ui.define([
                     }
                 });
             },
+            handleTypeMissmatch: function(oEvent) {
+                var aFileTypes = oEvent.getSource().getFileType();
+                aFileTypes.map(function(sType) {
+                    return "*." + sType;
+                });
+                MessageToast.show("The file type *." + oEvent.getParameter("fileType") +
+                                        " is not supported. Choose file type " +
+                                        aFileTypes.join(", "));
+            },
+    
             onDownloadSelectedButton: function () {
                 MessageToast.show("Donload templated Selected");
                 //here we need to call odata server for download template
@@ -298,6 +308,7 @@ sap.ui.define([
             onPressCancel: function () {
                 this.getView().byId("myDialog").close();
             },
+          
             onPressOk: function () {
                 var oList = this.getView().byId("idColumn");
 

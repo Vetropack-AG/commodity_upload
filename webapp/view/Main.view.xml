@@ -72,6 +72,7 @@
             fileType="XLSX"
             width = "500px"
 			tooltip="Upload your file"
+            typeMissmatch="handleTypeMissmatch"
 			uploadComplete="handleUploadComplete"
             visible="{model2>/status}"/>
             
