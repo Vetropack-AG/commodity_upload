@@ -25,6 +25,6 @@ builder:
           name: ZVGT_COM_UPL
           description: "Commodity Code Upload"
           package: ZVGT_MD_COM_UPL_APP
-          transport: "D91K921910"
+          transport: "D91K922449"
         exclude:
           - /test/

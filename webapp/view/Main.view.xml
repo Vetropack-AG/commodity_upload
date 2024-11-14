@@ -42,6 +42,7 @@
 
 			<upload:toolbar >
 				<OverflowToolbar>
+                  <Label text="Click below link to download template file" /> 
 					<ToolbarSpacer/>
 					<Button
 							id     ="downloadSelectedButton"
