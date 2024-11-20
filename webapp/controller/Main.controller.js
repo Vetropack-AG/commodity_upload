@@ -35,7 +35,7 @@ sap.ui.define([
                         that.getView().setModel(oSchemaList, "oSchemaList");
                     },
                     error: function (oError) {
-                        console.show("Ërror reading ET_SchemaSet!!");
+                        console.show("Error reading ET_SchemaSet!!");
                     }
 
                 });
@@ -44,7 +44,14 @@ sap.ui.define([
                 // To handle dynamic visibility of objects
                 var oData2 = {
                     status: false,
-                    status1: false
+                    status1: false,
+                    statuses: [
+                        {
+                            title:"",
+                            text:"(Click above link to download template file)",
+                            state:"Warning"
+                        }
+                    ]
                 };
 
                 // Create a JSON model and set the data
@@ -156,7 +163,9 @@ sap.ui.define([
     
                 }
                 var oDataModel = this.getOwnerComponent().getModel('oDataSrv');
-                //Declaration of JSON model for List Disply
+
+
+                 //Declaration of JSON model for List Disply
                 var oTemplateList = new JSONModel();
                 var oValidatedComboBox = oEvent.getSource();
 
@@ -278,7 +287,7 @@ sap.ui.define([
                             {
                                 type: 'binary'
                             });
-                        var oSheetName = workbook.SheetNames[0];
+                        var oSheetName = workbook.SheetNames[1];
                         var oExcelData = XLSX.utils.sheet_to_json(workbook.Sheets[oSheetName]);
                         var oJsonString = JSON.stringify(oExcelData);
                         that.postCommCodeToBackend(oJsonString);
