@@ -204,7 +204,8 @@ sap.ui.define([
                 {
                     "Schema": this.getView().byId('cbValue').getSelectedKey(),
                     "Key": "X",
-                    "Value": btoa(unescape(encodeURIComponent(oContent))),
+                   // "Value": btoa(unescape(encodeURIComponent(oContent))),
+                    "Value":oContent,
                     "CommUploadStautus":
                         [{
                             "Schema": " ",
