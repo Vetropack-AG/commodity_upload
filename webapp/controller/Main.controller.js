@@ -39,7 +39,17 @@ sap.ui.define([
                     }
 
                 });
-
+                // Select Language 
+                var oLangList = new JSONModel();
+                oDataModel.read("/LanguageTextSet",{
+                    success:function(oData){
+                        oLangList.setData({ Language: oData.results});
+                        that.getView().setModel(oLangList,"oLangList");
+                    },
+                    error:function(oError){
+                        console.show("Error in fetching backend data!");
+                    }
+                });
 
                 // To handle dynamic visibility of objects
                 var oData2 = {
@@ -143,7 +153,18 @@ sap.ui.define([
                     this.byId("versionButton").setEnabled(false);
                 }
             },
-
+            handlechangelang: function(oEvent){
+                var that = this;
+                var oLang = this.getView().byId("cbLang").getValue();
+                if(!oLang)  {
+                    sap.ui.getCore().byId("cbLang").setValueState("Error");
+                    oEvent.getSource().setValue("");
+                    MessageToast.show("Please Select Language");
+                    flag = false;                  
+                }else{
+                    oEvent.getSource().setValueState('None'); 
+                }  
+            },
             handleChange: function (oEvent) {
                 var that = this;
                 var oFileUploader = that.getView().byId("fileUploader");
@@ -203,6 +224,7 @@ sap.ui.define([
                 var oPayload =
                 {
                     "Schema": this.getView().byId('cbValue').getSelectedKey(),
+                    "Language":this.getView().byId('cbLang').getSelectedKey(),
                     "Key": "X",
                    // "Value": btoa(unescape(encodeURIComponent(oContent))),
                     "Value":oContent,
@@ -270,6 +292,15 @@ sap.ui.define([
                         oldJSONModel.setData([]);
         
                     }
+                    var oLang = this.getView().byId("cbLang").getValue();
+                    if(!oLang)  {
+                       // sap.ui.getCore().byId("cbLang").setValueState("Error");
+                      //  oEvent.getSource().setValue("");
+                        MessageToast.show("Please Select Language");
+                        this.getView().getModel('model2').setProperty('/status1', false);                
+                    }else{
+                       // oEvent.getSource().setValueState('None'); 
+                    
                 var oFileName = this.getView().byId("fileUploader").getValue();
                 if (!oFileName) {
                     MessageToast.show("File is not excel type.Loading failed");
@@ -297,7 +328,7 @@ sap.ui.define([
                     reader.readAsBinaryString(oFile);
 
                 }
-
+            }
             },
             openPersoDialog: function () {
                 var oView = this.getView();

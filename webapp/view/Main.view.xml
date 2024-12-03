@@ -24,6 +24,21 @@
 						
 			        </ComboBox>
 	    </l:VerticalLayout>
+        <l:VerticalLayout id ='vllang'
+	                	  class="sapUiResponsiveContentPadding"
+                		  width="50%" >
+                <Label id = 'SelLang' text="Select Language for Description" class= "sapUiTinyMarginTop" required="true"></Label>
+                   	<ComboBox id ='cbLang' selectedKey="{English}" required="true" placeholder="{English}"
+                            items="{
+                                path: 'oLangList>/Language'
+                           }"
+                        width = "35%"
+						change="handlechangelang"
+                    >
+        				<core:Item key="{oLangList>LANGUAGECODE}" text="{oLangList>LANGUAGENAME}"/>
+						
+			        </ComboBox>
+	    </l:VerticalLayout>
         <upload:UploadSet
 				id="UploadSet"
 				instantUpload="true"
@@ -57,7 +72,7 @@
 						mediaType    ="{oTemplateList>Content}"
                       
                         visibleRemove   ="false"
-                        visibleEdit     ="false"
+                        visibleEdit     ="true"
 						url             ="/sap/opu/odata/sap/ZVGT_UPLD_COMMCODES_SRV/ET_TemplateSet('{oTemplateList>Nosct}')/$value"
                         uploadState     ="{uploadState}">
 				</upload:UploadSetItem>
