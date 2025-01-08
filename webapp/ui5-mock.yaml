@@ -31,7 +31,7 @@ server:
       configuration:
         mountPath: /
         services:
-          - urlPath: /sap/opu/odata/sap/ZVGT_UPLD_COMMCODES_SRV
+          - urlPath: /sap/opu/odata/sap/ZVGT_UI_UPLD_COMMCODES_SRV
             metadataPath: ./webapp/localService/metadata.xml
             mockdataPath: ./webapp/localService/data
             generateMockData: true

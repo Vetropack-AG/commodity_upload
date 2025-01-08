@@ -1,31 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <edmx:Edmx Version="1.0" xmlns:edmx="http://schemas.microsoft.com/ado/2007/06/edmx" xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata" xmlns:sap="http://www.sap.com/Protocols/SAPData">
     <edmx:DataServices m:DataServiceVersion="2.0">
-        <Schema Namespace="ZVGT_UPLD_COMMCODES_SRV" xml:lang="en" sap:schema-version="1" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
+        <Schema Namespace="ZVGT_UI_UPLD_COMMCODES_SRV" xml:lang="en" sap:schema-version="1" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
             <Annotation Term="Core.SchemaVersion" String="1.0.0" xmlns="http://docs.oasis-open.org/odata/ns/edm"/>
-            <EntityType Name="ET_Template" m:HasStream="true" sap:is-thing-type="true" sap:content-version="1">
-                <Key>
-                    <PropertyRef Name="Filename"/>
-                </Key>
-                <Property Name="Filename" Type="Edm.String" Nullable="false" MaxLength="100" sap:unicode="false" sap:label="FILENAME" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
-                <Property Name="Mimetype" Type="Edm.String" Nullable="false" MaxLength="100" sap:unicode="false" sap:label="MIMETYPE" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
-                <Property Name="Content" Type="Edm.Binary" Nullable="false" sap:unicode="false" sap:label="Binary String" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
-            </EntityType>
-            <EntityType Name="ET_ImportCodes" sap:content-version="1">
-                <Key>
-                    <PropertyRef Name="Stcts"/>
-                    <PropertyRef Name="Comco"/>
-                    <PropertyRef Name="Datab"/>
-                </Key>
-                <Property Name="Stcts" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:label="Numbering Scheme" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
-                <Property Name="Comco" Type="Edm.String" Nullable="false" MaxLength="30" sap:unicode="false" sap:label="Commodity Code" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
-                <Property Name="Datab" Type="Edm.DateTime" Nullable="false" Precision="7" sap:unicode="false" sap:label="Valid From" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
-                <Property Name="Datbi" Type="Edm.DateTime" Nullable="false" Precision="7" sap:unicode="false" sap:label="Valid To" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
-                <Property Name="Text" Type="Edm.String" Nullable="false" sap:unicode="false" sap:label="Description" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
-                <Property Name="Deletion" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="Deletion ind." sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
-                <Property Name="Cuom1" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:label="1st Customs Unit" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
-            </EntityType>
-            <EntityType Name="ET_Schema" sap:content-version="1">
+            <EntityType Name="Schema" sap:content-version="1">
                 <Key>
                     <PropertyRef Name="Langu"/>
                     <PropertyRef Name="Nosct"/>
@@ -34,30 +12,73 @@
                 <Property Name="Nosct" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:label="No. Scheme Content" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
                 <Property Name="Text" Type="Edm.String" Nullable="false" MaxLength="60" sap:unicode="false" sap:label="Description" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
             </EntityType>
-            <EntityType Name="ET_COMMCODE_UPLOAD" sap:content-version="1">
+            <EntityType Name="Template" m:HasStream="true" sap:is-thing-type="true" sap:content-version="1">
                 <Key>
-                    <PropertyRef Name="Key"/>
+                    <PropertyRef Name="Nosct"/>
                 </Key>
+                <Property Name="Filename" Type="Edm.String" Nullable="false" MaxLength="255" sap:unicode="false" sap:label="FILENAME" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Nosct" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:label="No. Scheme Content" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Mimetype" Type="Edm.String" Nullable="false" MaxLength="100" sap:unicode="false" sap:label="MIMETYPE" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Content" Type="Edm.Binary" Nullable="false" sap:unicode="false" sap:label="Binary String" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+            </EntityType>
+            <EntityType Name="ReturnStatus" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="Schema"/>
+                    <PropertyRef Name="Comco"/>
+                </Key>
+                <Property Name="Schema" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Comco" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="DATAB" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="DATBI" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="BEMEH" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="TextEn" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Lcl_lang" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Text" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Status" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Message" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+            </EntityType>
+            <EntityType Name="FileUploadCommodity" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="Schema"/>
+                </Key>
+                <Property Name="Schema" Type="Edm.String" Nullable="false" sap:unicode="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Language" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
                 <Property Name="Key" Type="Edm.String" Nullable="false" sap:unicode="false" sap:sortable="false" sap:filterable="false"/>
                 <Property Name="Value" Type="Edm.String" Nullable="false" sap:unicode="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <NavigationProperty Name="CommUploadStatus" Relationship="ZVGT_UI_UPLD_COMMCODES_SRV.FileUpload_Return_association" FromRole="FromRole_FileUpload_Return_association" ToRole="ToRole_FileUpload_Return_association"/>
             </EntityType>
-            <EntityType Name="Upload_commodity" m:HasStream="true" sap:content-version="1">
+            <EntityType Name="LanguageText" sap:content-version="1">
                 <Key>
-                    <PropertyRef Name="Key"/>
+                    <PropertyRef Name="LANGUAGECODE"/>
                 </Key>
-                <Property Name="Key" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
-                <Property Name="Value" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
-                <Property Name="Result" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="LANGUAGECODE" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="LANGUAGENAME" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
             </EntityType>
-            <EntityContainer Name="ZVGT_UPLD_COMMCODES_SRV_Entities" m:IsDefaultEntityContainer="true" sap:supported-formats="atom json xlsx">
-                <EntitySet Name="ET_TemplateSet" EntityType="ZVGT_UPLD_COMMCODES_SRV.ET_Template" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:content-version="1"/>
-                <EntitySet Name="ET_ImportCodesSet" EntityType="ZVGT_UPLD_COMMCODES_SRV.ET_ImportCodes" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:content-version="1"/>
-                <EntitySet Name="ET_SchemaSet" EntityType="ZVGT_UPLD_COMMCODES_SRV.ET_Schema" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:content-version="1"/>
-                <EntitySet Name="ET_COMMCODE_UPLOADSet" EntityType="ZVGT_UPLD_COMMCODES_SRV.ET_COMMCODE_UPLOAD" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:addressable="false" sap:content-version="1"/>
-                <EntitySet Name="Upload_commoditySet" EntityType="ZVGT_UPLD_COMMCODES_SRV.Upload_commodity" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:addressable="false" sap:content-version="1"/>
+            <Association Name="FileUpload_Return_association" sap:content-version="1">
+                <End Type="ZVGT_UI_UPLD_COMMCODES_SRV.FileUploadCommodity" Multiplicity="*" Role="FromRole_FileUpload_Return_association"/>
+                <End Type="ZVGT_UI_UPLD_COMMCODES_SRV.ReturnStatus" Multiplicity="*" Role="ToRole_FileUpload_Return_association"/>
+                <ReferentialConstraint>
+                    <Principal Role="FromRole_FileUpload_Return_association">
+                        <PropertyRef Name="Schema"/>
+                    </Principal>
+                    <Dependent Role="ToRole_FileUpload_Return_association">
+                        <PropertyRef Name="Schema"/>
+                    </Dependent>
+                </ReferentialConstraint>
+            </Association>
+            <EntityContainer Name="ZVGT_UI_UPLD_COMMCODES_SRV_Entities" m:IsDefaultEntityContainer="true" sap:supported-formats="atom json xlsx">
+                <EntitySet Name="SchemaSet" EntityType="ZVGT_UI_UPLD_COMMCODES_SRV.Schema" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:addressable="false" sap:content-version="1"/>
+                <EntitySet Name="TemplateSet" EntityType="ZVGT_UI_UPLD_COMMCODES_SRV.Template" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:addressable="false" sap:content-version="1"/>
+                <EntitySet Name="ReturnStatusSet" EntityType="ZVGT_UI_UPLD_COMMCODES_SRV.ReturnStatus" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:addressable="false" sap:content-version="1"/>
+                <EntitySet Name="FileUploadCommoditySet" EntityType="ZVGT_UI_UPLD_COMMCODES_SRV.FileUploadCommodity" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:addressable="false" sap:content-version="1"/>
+                <EntitySet Name="LanguageTextSet" EntityType="ZVGT_UI_UPLD_COMMCODES_SRV.LanguageText" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:addressable="false" sap:content-version="1"/>
+                <AssociationSet Name="FileUpload_Return_association_AssocSet" Association="ZVGT_UI_UPLD_COMMCODES_SRV.FileUpload_Return_association" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
+                    <End EntitySet="FileUploadCommoditySet" Role="FromRole_FileUpload_Return_association"/>
+                    <End EntitySet="ReturnStatusSet" Role="ToRole_FileUpload_Return_association"/>
+                </AssociationSet>
             </EntityContainer>
-            <atom:link rel="self" href="https://vpavd910.vetropack.corporate.ads:44300/sap/opu/odata/sap/ZVGT_UPLD_COMMCODES_SRV/$metadata" xmlns:atom="http://www.w3.org/2005/Atom"/>
-            <atom:link rel="latest-version" href="https://vpavd910.vetropack.corporate.ads:44300/sap/opu/odata/sap/ZVGT_UPLD_COMMCODES_SRV/$metadata" xmlns:atom="http://www.w3.org/2005/Atom"/>
+            <atom:link rel="self" href="https://vpavd910.vetropack.corporate.ads:44300/sap/opu/odata/sap/ZVGT_UI_UPLD_COMMCODES_SRV/$metadata" xmlns:atom="http://www.w3.org/2005/Atom"/>
+            <atom:link rel="latest-version" href="https://vpavd910.vetropack.corporate.ads:44300/sap/opu/odata/sap/ZVGT_UI_UPLD_COMMCODES_SRV/$metadata" xmlns:atom="http://www.w3.org/2005/Atom"/>
         </Schema>
     </edmx:DataServices>
 </edmx:Edmx>

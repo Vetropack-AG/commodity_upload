@@ -13,8 +13,8 @@
         <l:VerticalLayout id ='vlmain'
 	                	  class="sapUiResponsiveContentPadding"
                 		  width="100%" >
-                <Label id = 'lblMainSelectSchema' text="Select Schema" class= "sapUiTinyMarginTop"></Label>
-                   	<ComboBox id ='cbValue'
+                <Label id = 'lblMainSelectSchema' text="Select Schema" class= "sapUiTinyMarginTop" required="true"></Label>
+                   	<ComboBox id ='cbValue' required="true"
                             items="{
                                 path: 'oSchemaList>/Schema'
                            }"
@@ -27,22 +27,21 @@
         <l:VerticalLayout id ='vllang'
 	                	  class="sapUiResponsiveContentPadding"
                 		  width="50%" >
-                <Label id = 'SelLang' text="Select Language for Description" class= "sapUiTinyMarginTop" required="true"></Label>
+                <Label id = 'SelLang' text="Select Language for Description" class= "sapUiTinyMarginTop" required="true" visible="{model2>/status}"> </Label>
                    	<ComboBox id ='cbLang' selectedKey="{English}" required="true" placeholder="{English}"
                             items="{
                                 path: 'oLangList>/Language'
                            }"
                         width = "35%"
-						change="handlechangelang"
-                    >
+						change="handlechangelang" visible="{model2>/status}">
         				<core:Item key="{oLangList>LANGUAGECODE}" text="{oLangList>LANGUAGENAME}"/>
 						
 			        </ComboBox>
 	    </l:VerticalLayout>
         <upload:UploadSet
 				id="UploadSet"
-				instantUpload="true"
-				showIcons="true"
+				instantUpload="false"
+				showIcons="false"
 				uploadEnabled="false"
 				terminationEnabled="true"
 				fileTypes="xlsx"
@@ -52,8 +51,8 @@
 				items="{path: 'oTemplateList>/file', templateShareable: false}"
                
 				selectionChanged="onSelectionChange" 
-            
-                visible="{model2>/status}">
+                
+                visible="{UIState>/Visible}">
 
 			<upload:toolbar >
 				<OverflowToolbar>
@@ -72,8 +71,8 @@
 						mediaType    ="{oTemplateList>Content}"
                       
                         visibleRemove   ="false"
-                        visibleEdit     ="true"
-						url             ="/sap/opu/odata/sap/ZVGT_UPLD_COMMCODES_SRV/ET_TemplateSet('{oTemplateList>Nosct}')/$value"
+                        visibleEdit     ="false"
+						url             ="/sap/opu/odata/sap/ZVGT_UI_UPLD_COMMCODES_SRV/TemplateSet('{oTemplateList>Nosct}')/$value"
                         uploadState     ="{uploadState}">
 				</upload:UploadSetItem>
 			</upload:items>
@@ -89,17 +88,17 @@
 			tooltip="Upload your file"
             typeMissmatch="handleTypeMissmatch"
 			uploadComplete="handleUploadComplete"
-            visible="{model2>/status}"/>
+            visible="{UIState>/Visible}"/>
             
 		<Button
 			text="Upload Excel File"
 			press="handleUploadPress"
-            visible="{model2>/status}"/>
+            visible="{UIState>/Visible}"/>
 	</l:VerticalLayout>
      
         <Table id="responseTable" 
          items="{oReturnMessage>/items}"
-         visible="{model2>/status}">
+         visible="{UIState>/Visible}">
          <headerToolbar>
             <OverflowToolbar >
                 <Title id="title" text="Return Logs"/>
@@ -116,7 +115,6 @@
                             <Text id='txtMain1' text="{oReturnMessage>Schema}"></Text>
                             <Text id='txtMain2' text="{oReturnMessage>Comco}"></Text>
                             <Text id='txtMain3' text="{oReturnMessage>Text}"></Text>
-                            <Text id='txtMain4' text="{oReturnMessage>TextEn}"></Text>
                             <Text id='txtMain7' text="{oReturnMessage>BEMEH}"></Text>
                             <Text id='txtMain5' text="{
                                                     path : 'oReturnMessage>DATAB',

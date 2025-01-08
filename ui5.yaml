@@ -20,6 +20,7 @@ server:
             url: http://vpavd910.vetropack.corporate.ads:44300
             client: '100'
             destination: ERP_EMBEDDED_D91_100
+            authenticationType: NoAuthentication
     - name: fiori-tools-appreload
       afterMiddleware: compression
       configuration:

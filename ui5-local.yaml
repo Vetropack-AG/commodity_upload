@@ -29,12 +29,13 @@ server:
             url: http://vpavd910.vetropack.corporate.ads:44300
             client: '100'
             destination: ERP_EMBEDDED_D91_100
+            authenticationType: NoAuthentication
     - name: sap-fe-mockserver
       beforeMiddleware: csp
       configuration:
         mountPath: /
         services:
-          - urlPath: /sap/opu/odata/sap/ZVGT_UPLD_COMMCODES_SRV
+          - urlPath: /sap/opu/odata/sap/ZVGT_UI_UPLD_COMMCODES_SRV
             metadataPath: ./webapp/localService/metadata.xml
             mockdataPath: ./webapp/localService/data
             generateMockData: true

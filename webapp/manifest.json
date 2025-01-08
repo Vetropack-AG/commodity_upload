@@ -17,7 +17,7 @@
     },
     "dataSources": {
       "mainService": {
-        "uri": "/sap/opu/odata/sap/ZVGT_UPLD_COMMCODES_SRV/",
+        "uri": "/sap/opu/odata/sap/ZVGT_UI_UPLD_COMMCODES_SRV/",
         "type": "OData",
         "settings": {
           "annotations": [],

@@ -21,21 +21,29 @@ sap.ui.define([
                 // Declaration of  Global Data model 
                 var that = this;
                 var oDataModel = this.getOwnerComponent().getModel('oDataSrv');
+                
+                //UIState model defination
 
+                var UIStateModel = new JSONModel();
+                var UIStateData = {
+                    Visible: false
+                }
+                UIStateModel.setData(UIStateData);
+                this.getView().setModel(UIStateModel,"UIState")
 
                 //UI5 map oData Result of ET_TemplateSet
                 var oUploadSet = this.getView().byId("UploadSet");
-                oUploadSet.setUploadUrl("/sap/opu/odata/sap/ZVGT_UPLD_COMMCODES_SRV/ET_TemplateSet");
+                oUploadSet.setUploadUrl("/sap/opu/odata/sap/ZVGT_UI_UPLD_COMMCODES_SRV/TemplateSet");
 
                 //Call to oData Entity Schema List
                 var oSchemaList = new JSONModel();
-                oDataModel.read("/ET_SchemaSet", {
+                oDataModel.read("/SchemaSet", {
                     success: function (oData) {
                         oSchemaList.setData({ Schema: oData.results });
                         that.getView().setModel(oSchemaList, "oSchemaList");
                     },
                     error: function (oError) {
-                        console.show("Error reading ET_SchemaSet!!");
+                        console.show("Error reading SchemaSet!!");
                     }
 
                 });
@@ -76,7 +84,7 @@ sap.ui.define([
                         { name: "Schema", visible: true, id: "Schema" },
                         { name: "Commodity", visible: true, id: "Commodity" },
                         { name: "Description", visible: true, id: "Description" },
-                        { name: "Description En", visible: true, id: "DescriptionEn" },
+                  //      { name: "Description En", visible: true, id: "DescriptionEn" },
                         { name: "First Unit", visible: true, id: "FirstUnit" },
                         { name: "Valid From", visible: true, id: "ValiFfrom" },
                         { name: "Valid To", visible: true, id: "ValidTo" },
@@ -155,20 +163,10 @@ sap.ui.define([
             },
             handlechangelang: function(oEvent){
                 var that = this;
-                var oLang = this.getView().byId("cbLang").getValue();
-                if(!oLang)  {
-                    sap.ui.getCore().byId("cbLang").setValueState("Error");
-                    oEvent.getSource().setValue("");
-                    MessageToast.show("Please Select Language");
-                    flag = false;                  
-                }else{
-                    oEvent.getSource().setValueState('None'); 
-                }  
-            },
-            handleChange: function (oEvent) {
-                var that = this;
                 var oFileUploader = that.getView().byId("fileUploader");
                 var oldJSONModel = that.getView().getModel("oReturnMessage");
+                var oValidatedComboBox = oEvent.getSource();
+
                 oFileUploader.checkFileReadable().then(function() {
                     console.log("Clear File Name");
                  }, function(error) {
@@ -176,25 +174,88 @@ sap.ui.define([
                  }).then(function() {
                      oFileUploader.clear();
                  });
-          
+               
                 if ( oldJSONModel)
                 {
                     oldJSONModel.refresh(true);
                     oldJSONModel.setData([]);
     
                 }
+                
                 var oDataModel = this.getOwnerComponent().getModel('oDataSrv');
-
-
+                var oSchema = this.getView().byId('cbValue').getSelectedKey();            
                  //Declaration of JSON model for List Disply
-                var oTemplateList = new JSONModel();
-                var oValidatedComboBox = oEvent.getSource();
-
+                var oTemplateList = new JSONModel();               
                 if (oValidatedComboBox.getSelectedKey() != '') {
                     var filter1 = new sap.ui.model.Filter({
                         path: "Nosct",
                         operator: sap.ui.model.FilterOperator.EQ,
+                       // value1: oValidatedComboBox.getSelectedKey()
+                       value1: oSchema
+                      
+                    });
+                    //Call to oData Entity Template List
+                    oDataModel.read("/TemplateSet", {
+                        filters: [filter1],
+                        success: function (oData) {
+                            oTemplateList.setData({ file: oData.results });
+                            that.getView().setModel(oTemplateList, "oTemplateList");
+                        },
+                        error: function (oError) {
+                            consol.show("Error reading TemplateSet!!");
+                        }
+                    });
+                    var UIStateModel = this.getView().getModel("UIState");
+                    var UIStateData = UIStateModel.getData();
+                    UIStateData.Visible = true
+                    UIStateModel.setData(UIStateData);
+                   // this.getView().getModel('model2').setProperty('/status', true);
+                }
+                else {
+                    //// change propeerty of UPload, Download & Table to Visible using local model dynamically
+                    this.getView().getModel('model2').setProperty('/status', false);
+                    this.getView().getModel('model2').setProperty('/status1', false);
+                }
+                                
+            },
+            handleChange: function (oEvent) {
+                var that = this;
+                var oFileUploader = that.getView().byId("fileUploader");
+                var oldJSONModel = that.getView().getModel("oReturnMessage");
+                var oLang = that.getView().byId("cbLang");
+                oLang.setValue("");
+                var oTemplateList = new JSONModel();
+                oTemplateList.setData(" ");
+                that.getView().setModel(oTemplateList, "oTemplateList");
+                
+                oFileUploader.checkFileReadable().then(function() {
+                    console.log("Clear File Name");
+                 }, function(error) {
+                     console.log("Clear File Name")
+                 }).then(function() {
+                     oFileUploader.clear();
+                 });
+               
+                if ( oldJSONModel)
+                {
+                    oldJSONModel.refresh(true);
+                    oldJSONModel.setData([]);
+    
+                }
+                
+
+                var oDataModel = this.getOwnerComponent().getModel('oDataSrv');
+                                
+                 //Declaration of JSON model for List Disply
+               
+                var oValidatedComboBox = oEvent.getSource();
+
+                if (oValidatedComboBox.getSelectedKey() != '') {
+                  /*  var filter1 = new sap.ui.model.Filter({
+                        path: "Nosct",
+                        operator: sap.ui.model.FilterOperator.EQ,
                         value1: oValidatedComboBox.getSelectedKey()
+                      
                     });
                     //Call to oData Entity Template List
                     oDataModel.read("/ET_TemplateSet", {
@@ -204,9 +265,9 @@ sap.ui.define([
                             that.getView().setModel(oTemplateList, "oTemplateList");
                         },
                         error: function (oError) {
-                            consol.show("Ërror reading ET_TemplateSet!!");
+                            consol.show("Error reading ET_TemplateSet!!");
                         }
-                    });
+                    });*/
                     ///  change propeerty of UPload, Download & Table to Visible using local model dynamically
                     this.getView().getModel('model2').setProperty('/status', true);
                 }
@@ -215,6 +276,7 @@ sap.ui.define([
                     this.getView().getModel('model2').setProperty('/status', false);
                     this.getView().getModel('model2').setProperty('/status1', false);
                 }
+                return[oValidatedComboBox];
             },
 
             postCommCodeToBackend: function (oContent) {
@@ -228,14 +290,14 @@ sap.ui.define([
                     "Key": "X",
                    // "Value": btoa(unescape(encodeURIComponent(oContent))),
                     "Value":oContent,
-                    "CommUploadStautus":
+                    "CommUploadStatus":
                         [{
                             "Schema": " ",
                             "Comco": " ",
                             "DATAB": " ",
                             "DATBI": " ",
                             "BEMEH": " ",
-                            "TextEn": " ",
+                         //   "TextEn": " ",
                             "Text": " ",
                             "Status": " ",
                             "Message": " "
@@ -249,7 +311,7 @@ sap.ui.define([
                     async: false,
                     success: function (oData, oResponse) {
                         debugger;
-                        oReturnMessage.setData({ items: oData.CommUploadStautus.results });
+                        oReturnMessage.setData({ items: oData.CommUploadStatus.results });
                         that.getView().setModel(oReturnMessage, "oReturnMessage");
                         that.showTable();
                     },
@@ -269,15 +331,15 @@ sap.ui.define([
                 if (aItems.length > 0) {
                     for (var i = 0; i < aItems.length; i++) {
                         var aCells = aItems[i].getCells();
-                        if (aItems[i].getCells()[7].getText() == 'Fail') 
+                        if (aItems[i].getCells()[6].getText() == 'Fail') 
                          {
+                            aItems[i].getCells()[6].addStyleClass("redBG");
                             aItems[i].getCells()[7].addStyleClass("redBG");
-                            aItems[i].getCells()[8].addStyleClass("redBG");
                         }
                         else 
                         {
+                            aItems[i].getCells()[6].addStyleClass("greenBG");
                             aItems[i].getCells()[7].addStyleClass("greenBG");
-                            aItems[i].getCells()[8].addStyleClass("greenBG");
                         }
                     }
                 MessageToast.show("File Processed!!");
@@ -414,13 +476,6 @@ sap.ui.define([
                     property: 'Text',
                     type: String
                 });
-    
-                aCols.push({
-                    label: 'Description En',
-                    property: 'Texten',
-                    type: String
-                });
-               
                 
                 aCols.push({
                     label: ' First Unit',
