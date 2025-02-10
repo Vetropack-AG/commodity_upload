@@ -16,8 +16,10 @@
                 <Label id = 'lblMainSelectSchema' text="Select Schema" class= "sapUiTinyMarginTop" required="true"></Label>
                    	<ComboBox id ='cbValue' required="true"
                             items="{
-                                path: 'oSchemaList>/Schema'
+                                path: 'oSchemaList>/Schema',
+                                sorter: { path: 'Nosct'}
                            }"
+                        selectedKey="{uiModel>/Country}"
                         width = "35%"
 						 change = "handleChange">
         				<core:Item key="{oSchemaList>Nosct}" text="{oSchemaList>Text}" />
@@ -28,16 +30,21 @@
 	                	  class="sapUiResponsiveContentPadding"
                 		  width="50%" >
                 <Label id = 'SelLang' text="Select Language for Description" class= "sapUiTinyMarginTop" required="true" visible="{model2>/status}"> </Label>
-                   	<ComboBox id ='cbLang' selectedKey="{English}" required="true" placeholder="{English}"
+                   	<ComboBox id ='cbLang' required="true" placeholder="{English}"
                             items="{
-                                path: 'oLangList>/Language'
+                                path: 'oLangList>/Language',
+                                sorter: { path: 'LANGUAGENAME'}
                            }"
+                        selectedKey="{uiModel>/Lang}"
                         width = "35%"
 						change="handlechangelang" visible="{model2>/status}">
         				<core:Item key="{oLangList>LANGUAGECODE}" text="{oLangList>LANGUAGENAME}"/>
 						
 			        </ComboBox>
 	    </l:VerticalLayout>
+        
+        <VBox  visible="{uiModel>/isVisible}">
+
         <upload:UploadSet
 				id="UploadSet"
 				instantUpload="false"
@@ -136,6 +143,7 @@
                     </ColumnListItem> 
                 </items>
                   </Table> 
+        </VBox>
         </content>
     </Page>
 </mvc:View>

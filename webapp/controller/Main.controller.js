@@ -31,6 +31,12 @@ sap.ui.define([
                 UIStateModel.setData(UIStateData);
                 this.getView().setModel(UIStateModel,"UIState")
 
+                this.getView().setModel(new JSONModel({
+                    'Lang':'',
+                    'Country':'',
+                    'isVisible': false
+                }),"uiModel")
+
                 //UI5 map oData Result of ET_TemplateSet
                 var oUploadSet = this.getView().byId("UploadSet");
                 oUploadSet.setUploadUrl("/sap/opu/odata/sap/ZVGT_UI_UPLD_COMMCODES_SRV/TemplateSet");
@@ -216,14 +222,16 @@ sap.ui.define([
                     this.getView().getModel('model2').setProperty('/status', false);
                     this.getView().getModel('model2').setProperty('/status1', false);
                 }
-                                
+                
+                this._checkVisible(oEvent);
             },
+
             handleChange: function (oEvent) {
                 var that = this;
                 var oFileUploader = that.getView().byId("fileUploader");
                 var oldJSONModel = that.getView().getModel("oReturnMessage");
                 var oLang = that.getView().byId("cbLang");
-                oLang.setValue("");
+                // oLang.setValue("");
                 var oTemplateList = new JSONModel();
                 oTemplateList.setData(" ");
                 that.getView().setModel(oTemplateList, "oTemplateList");
@@ -276,7 +284,27 @@ sap.ui.define([
                     this.getView().getModel('model2').setProperty('/status', false);
                     this.getView().getModel('model2').setProperty('/status1', false);
                 }
+                
+                this._checkVisible(oEvent);
+
                 return[oValidatedComboBox];
+            },
+
+            _checkVisible: function(oEvent){
+
+                const oUiModel = this.getView().getModel("uiModel");
+                const sInputId = oEvent.getParameter('id').split('--').pop();
+
+                if (sInputId === 'cbValue'){
+                    oUiModel.setProperty('/Lang','');
+                }
+                 
+                 if (oUiModel.getProperty('/Lang') && oUiModel.getProperty('/Country')){
+                    oUiModel.setProperty('/isVisible',true);
+                 }else{
+                    oUiModel.setProperty('/isVisible',false);
+                 }
+
             },
 
             postCommCodeToBackend: function (oContent) {
