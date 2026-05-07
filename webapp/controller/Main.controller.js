@@ -310,7 +310,6 @@ sap.ui.define([
                     method: "POST",
                     async: false,
                     success: function (oData, oResponse) {
-                        debugger;
                         oReturnMessage.setData({ items: oData.CommUploadStatus.results });
                         that.getView().setModel(oReturnMessage, "oReturnMessage");
                         that.showTable();

@@ -1,8 +1,8 @@
-# yaml-language-server: $schema=https://sap.github.io/ui5-tooling/schema/ui5.yaml.json
+# yaml-language-server: $schema=https://ui5.github.io/cli/schema/ui5.yaml.json
 
-specVersion: "3.1"
+specVersion: "4.0"
 metadata:
-  name: zgvt.upload.commodityupload
+  name: commodityupload
 type: application
 server:
   customMiddleware:
@@ -32,3 +32,7 @@ server:
       configuration:
         component: zgvt.upload.commodityupload
         ui5Theme: sap_fiori_3
+builder:
+  componentPreload:
+    excludes:
+      - "**/xlsx.js"
